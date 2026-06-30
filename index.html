@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+  <meta name="theme-color" content="#0a0907">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Виктор Цой — Режиссёрский тритмент</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Постоянные оверлеи -->
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <filter id="g">
+      <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#g)" />
+  </svg>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <div class="deck" id="deck">
+
+    <!-- ════ ЭКРАН 1 — ГЛАВНАЯ ════ -->
+    <section class="slide active" id="s1" aria-label="Главная">
+      <video class="bg" poster="media/cover-poster.jpg" muted loop playsinline preload="metadata"
+        data-src="media/cover.mp4" aria-hidden="true"></video>
+      <div class="veil dark"></div>
+      <div class="hair" style="top:9%;left:0;right:0;height:1px"></div>
+      <div class="tape" style="top:7%;left:0;right:0;height:3px;opacity:.3"></div>
+
+      <div class="kino"><span class="stamp red">КИНО</span></div>
+      <div class="years"><span class="stamp gold">1962 — 1990</span></div>
+      <div class="gk">группа крови</div>
+
+      <div class="concept">Визуальная концепция графики<small>visual language of the project</small></div>
+
+      <div class="credit">
+        <div class="t">Тритмент</div>
+        <div class="n">Серяк Кирилл</div>
+      </div>
+
+      <div class="tag">рок · ссср · память</div>
+
+      <span class="slabel">Главная</span><span class="snum">01 / 08</span>
+      <span class="rec" style="top:8%;right:8%"></span>
+    </section>
+
+    <!-- ════ ЭКРАН 2 — ИНТРО / ОБРАЩЕНИЕ ════ -->
+    <section class="slide" id="s2" aria-label="Обращение к режиссёрам">
+      <video class="bg blur" poster="media/intro-poster.jpg" muted loop playsinline preload="none"
+        data-src="media/intro.mp4" aria-hidden="true"></video>
+      <div class="veil darker"></div>
+      <div class="layer">
+        <div class="wrap glass">
+          <div class="eyebrow">Обращение к режиссёрам</div>
+          <p class="addr">Дорогие друзья! В брифе уже заложены очень точные и сильные идеи и направления,
+            а визуальный жанр полностью определён. Поэтому я постараюсь предложить пути, которыми мы сможем
+            воплотить ваше видение и обогатить историю.</p>
+          <div class="sign">— память + интерпретация</div>
+        </div>
+      </div>
+      <span class="slabel">Интро</span><span class="snum">02 / 08</span>
+      <span class="rec" style="top:8%;right:8%"></span>
+    </section>
+
+    <!-- ════ ЭКРАН 3 — ОСНОВНАЯ ЛИНИЯ РАБОТЫ ════ -->
+    <section class="slide" id="s3" aria-label="Основная линия работы">
+      <div class="layer">
+        <h2 class="head display">ОСНОВНАЯ ЛИНИЯ
+          <span class="sub">архив → коллажная анимация → реконструкция</span>
+        </h2>
+
+        <div class="process">
+          <div class="stage">
+            <div class="st">этап 01</div>
+            <div class="ti vhs" style="color:var(--cream)">АРХИВ</div>
+            <div class="de">Реальные фото, видео и материалы Цоя, фанатские материалы.</div>
+            <div class="frame"><video muted loop playsinline preload="none" poster="media/archive-cassette-poster.jpg"
+                data-src="media/archive-cassette.mp4" aria-hidden="true"></video></div>
+          </div>
+          <div class="arrow"><b>→</b><span>оживает</span></div>
+          <div class="stage">
+            <div class="st">этап 02</div>
+            <div class="ti gold">КОЛЛАЖНАЯ АНИМАЦИЯ</div>
+            <div class="de">Архив оживает через слои, вырезки, графику, типографику и монтаж.</div>
+            <div class="frame"><video muted loop playsinline preload="none" poster="media/archive-collage-poster.jpg"
+                data-src="media/archive-collage.mp4" aria-hidden="true"></video></div>
+          </div>
+          <div class="arrow"><b>→</b><span>становится</span></div>
+          <div class="stage">
+            <div class="st">этап 03</div>
+            <div class="ti red">РЕКОНСТРУКЦИЯ</div>
+            <div class="de">Художественная интерпретация событий, которых нет в архиве.</div>
+            <div class="frame"><video muted loop playsinline preload="none" poster="media/recon-cutout-poster.jpg"
+                data-src="media/recon-cutout.mp4" aria-hidden="true"></video></div>
+          </div>
+        </div>
+
+        <div class="mark">каждый этап = трансформация памяти</div>
+      </div>
+      <span class="slabel">Основная линия работы</span><span class="snum">03 / 08</span>
+      <span class="rec" style="bottom:4%;right:5%"></span>
+    </section>
+
+    <!-- ════ ЭКРАН 4 — ВИЗУАЛЬНЫЙ ЯЗЫК АРХИВОВ ════ -->
+    <section class="slide" id="s4" aria-label="Визуальный язык архивов">
+      <div class="layer">
+        <div class="col-text">
+          <h2 class="head display vhs">ARCHIVE <span class="gold" style="text-shadow:none">LANGUAGE</span></h2>
+          <div class="eyebrow" style="margin-bottom:.35em">Визуальный язык архивов</div>
+          <p class="lead">Главная мысль: <b>Архив = fan-made collage system</b> — фанатская, эмоциональная,
+            многослойная система из фото, видео, бумаги, VHS-шума и рукописных пометок.</p>
+
+          <div class="points">
+            <div class="point">
+              <div class="pn">01</div>
+              <div>
+                <div class="pt">Photo collage</div>
+                <div class="pd">Фото Цоя, группы, фанатские вырезки, постеры, наклейки, бумажные текстуры.</div>
+              </div>
+            </div>
+            <div class="point">
+              <div class="pn">02</div>
+              <div>
+                <div class="pt">Video fragments</div>
+                <div class="pd">Концертные видео, VHS-записи, стоп-кадры, VHS-шум, grain.</div>
+              </div>
+            </div>
+            <div class="point">
+              <div class="pn">03</div>
+              <div>
+                <div class="pt">Graphic &amp; handwritten annotations</div>
+                <div class="pd">Doodle, маркерные заметки, стрелки, круги, фанатские комментарии.</div>
+              </div>
+            </div>
+            <div class="point">
+              <div class="pn">04</div>
+              <div>
+                <div class="pt">Texture &amp; paper layers</div>
+                <div class="pd">Бумага, сканы, ксероксы, рваные края, print noise, texture overlays.</div>
+              </div>
+            </div>
+            <div class="point">
+              <div class="pn">05</div>
+              <div>
+                <div class="pt">Fan-made collage memory</div>
+                <div class="pd">Архив должен ощущаться как живая фанатская память, собранная руками.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cluster">
+          <div class="frame"><video muted loop playsinline preload="none" poster="media/archive-cassette-poster.jpg"
+              data-src="media/archive-cassette.mp4" aria-hidden="true"></video></div>
+          <div class="frame"><video muted loop playsinline preload="none" poster="media/archive-cutouts-poster.jpg"
+              data-src="media/archive-cutouts.mp4" aria-hidden="true"></video></div>
+          <div class="frame"><video muted loop playsinline preload="none" poster="media/archive-loop-poster.jpg"
+              data-src="media/archive-loop.mp4" aria-hidden="true"></video></div>
+        </div>
+
+        <div class="accents">
+          <span class="stamp gold">FAN-MADE COLLAGE</span>
+          <span class="stamp dim">MULTILAYERED &amp; FRAGMENTED</span>
+          <span class="stamp red">VHS / SCAN / PAPER</span>
+          <span class="stamp dim">HAND-DRAWN NOTES</span>
+        </div>
+      </div>
+      <span class="slabel">Визуальный язык архивов</span><span class="snum">04 / 08</span>
+      <span class="rec" style="bottom:4%;right:5%"></span>
+    </section>
+
+    <!-- ════ ЭКРАН 5 — ВИЗУАЛЬНЫЙ ЯЗЫК РЕКОНСТРУКЦИИ ════ -->
+    <section class="slide" id="s5" aria-label="Визуальный язык реконструкции">
+      <div class="layer">
+        <h2 class="head display">RECONSTRUCTION <span class="gold">LANGUAGE</span></h2>
+        <div class="eyebrow" style="margin-bottom:.5em">Визуальный язык реконструкции</div>
+        <p class="lead">Реконструкция — это визуальная интерпретация событий, которых нет в архиве.
+          Четыре режима подачи, которые мы можем смешивать.</p>
+
+        <div class="cards">
+          <div class="card">
+            <div class="cv"><video muted loop playsinline preload="none" poster="media/recon-paper-poster.jpg"
+                data-src="media/recon-paper.mp4" aria-hidden="true"></video></div>
+            <div class="cb">
+              <div class="mn">MODE 01</div>
+              <div class="ct gold">Cut-out characters</div>
+              <div class="cd">Вырезанные персонажи, каждый отдельным слоем.</div>
+              <div class="rule" style="background:var(--gold)"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="cv"><video muted loop playsinline preload="none" poster="media/recon-main-poster.jpg"
+                data-src="media/recon-main.mp4" aria-hidden="true"></video></div>
+            <div class="cb">
+              <div class="mn">MODE 02</div>
+              <div class="ct" style="color:var(--cream)">Sketch animation / storyboard</div>
+              <div class="cd">Лайнер, маркер, быстрые скетчи, ручная покадровая анимация.</div>
+              <div class="rule" style="background:var(--cream)"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="cv"><video muted loop playsinline preload="none" poster="media/recon-punk-poster.jpg"
+                data-src="media/recon-punk.mp4" aria-hidden="true"></video></div>
+            <div class="cb">
+              <div class="mn">MODE 03</div>
+              <div class="ct red">Motion collage / graphic punk</div>
+              <div class="cd">Резкий монтаж, типографика, перекладки, визуальные вставки.</div>
+              <div class="rule" style="background:var(--red)"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="cv"><video muted loop playsinline preload="none" poster="media/recon-storyboard-poster.jpg"
+                data-src="media/recon-storyboard.mp4" aria-hidden="true"></video></div>
+            <div class="cb">
+              <div class="mn">MODE 04</div>
+              <div class="ct" style="color:var(--green)">Paper &amp; texture layers</div>
+              <div class="cd">Бумага, grain, рваные края, акварель, наклейки, doodle.</div>
+              <div class="rule" style="background:var(--green)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="slabel">Визуальный язык реконструкции</span><span class="snum">05 / 08</span>
+      <span class="rec" style="top:8%;right:8%"></span>
+    </section>
+
+    <!-- ════ ЭКРАН 6 — СИСТЕМА ПЕРЕХОДОВ ════ -->
+    <section class="slide" id="s6" aria-label="Система переходов">
+      <video class="bg blur" poster="media/archive-collage-poster.jpg" muted loop playsinline preload="none"
+        data-src="media/archive-collage.mp4" aria-hidden="true"></video>
+      <div class="veil darker"></div>
+      <div class="layer center">
+        <div class="panel glass">
+          <div class="eyebrow">Монтажная логика</div>
+          <h2 class="head display">СИСТЕМА ПЕРЕХОДОВ</h2>
+          <p class="lead">Переходы между архивом и реконструкцией:</p>
+          <ul class="list">
+            <li>рваная бумага / склейка</li>
+            <li>маркер дорисовывает сцену</li>
+            <li>сканирование и VHS-глитч</li>
+            <li>монтажные резкие перебросы</li>
+          </ul>
+        </div>
+      </div>
+      <span class="slabel">Система переходов</span><span class="snum">06 / 08</span>
+      <span class="rec" style="top:8%;right:8%"></span>
+    </section>
+
+    <!-- ════ ЭКРАН 7 — ИНСТРУМЕНТЫ ПРОИЗВОДСТВА ════ -->
+    <section class="slide" id="s7" aria-label="Инструменты производства">
+      <video class="bg blur" poster="media/recon-cutout-poster.jpg" muted loop playsinline preload="none"
+        data-src="media/recon-cutout.mp4" aria-hidden="true"></video>
+      <div class="veil darker"></div>
+      <div class="layer center">
+        <div class="panel glass">
+          <div class="eyebrow">Пайплайн</div>
+          <h2 class="head display">ИНСТРУМЕНТЫ ПРОИЗВОДСТВА</h2>
+          <p class="lead">Система создаётся через комбинацию программ:</p>
+          <div class="chips">
+            <span class="chip">Toon Boom Harmony</span>
+            <span class="chip">MOHO</span>
+            <span class="chip">After Effects</span>
+            <span class="chip">AI-инструменты</span>
+          </div>
+          <ul class="list">
+            <li>коллажную анимацию</li>
+            <li>ручную графику</li>
+            <li>стоп-моушн ощущение</li>
+            <li>скан / бумажные текстуры</li>
+            <li>AI как вспомогательный инструмент для расширения слоёв</li>
+          </ul>
+        </div>
+      </div>
+      <span class="slabel">Инструменты производства</span><span class="snum">07 / 08</span>
+      <span class="rec" style="top:8%;right:8%"></span>
+    </section>
+
+    <!-- ════ ЭКРАН 8 — КОНЦОВКА ════ -->
+    <section class="slide" id="s8" aria-label="Концовка">
+      <img class="bg blur" src="media/last_cover.jpeg" alt="" aria-hidden="true">
+      <div class="veil darker"></div>
+      <div class="layer center">
+        <div class="panel glass">
+          <div class="eyebrow">Финал</div>
+          <h2 class="head display">ОЖИВИТЬ <span class="gold">АРХИВ</span></h2>
+          <p class="body">Этот проект показывает, как мы можем оживить архивы и истории Виктора Цоя через
+            визуальный язык анимации. Все элементы — от архивных материалов до реконструкций — будут построены
+            так, чтобы создавать цельное и живое ощущение истории.</p>
+          <p class="body" style="margin-top:.7em">Также приглашаю вас перейти по ссылке на Яндекс Диск, где вы найдёте
+            больше референсов. Возможно, вам понравятся другие варианты, и мы сможем немного скорректировать
+            направление. Надеюсь, что вместе мы нащупаем верный путь и получим интересную, гармоничную историю,
+            которая органично впишется в ваш фильм.</p>
+          <a class="btn" href="https://disk.yandex.ru/d/VFZ16k_Nkq1aqg" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17 17 7" />
+              <path d="M8 7h9v9" />
+            </svg>
+            Открыть Яндекс Диск
+          </a>
+        </div>
+      </div>
+      <span class="slabel">Концовка</span><span class="snum">08 / 08</span>
+      <span class="rec" style="top:8%;right:8%"></span>
+    </section>
+
+  </div>
+
+  <!-- Навигация -->
+  <nav class="nav" aria-label="Навигация по слайдам">
+    <button id="prev" aria-label="Предыдущий слайд">&#8592;</button>
+    <div class="pips" id="pips" role="tablist"></div>
+    <button id="next" aria-label="Следующий слайд">&#8594;</button>
+  </nav>
+  <div class="swipe-hint" id="hint">свайп ↑ ↓</div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

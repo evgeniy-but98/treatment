@@ -1,0 +1,1202 @@
+/* ============================================================================
+   ВИКТОР ЦОЙ — РЕЖИССЁРСКИЙ ТРИТМЕНТ
+   Чистый CSS. Палитра и VHS-эстетика архива сохранены из исходного макета.
+   Типографика — полностью адаптивная (clamp + vw), без жёстких px.
+   ========================================================================= */
+
+:root {
+  /* ── Палитра ── */
+  --bg: #0a0907;
+  --bg2: #0c0b08;
+  --cream: #e5d9c0;
+  --text: #c8bcaa;
+  --muted: #8a7f6b;
+  --muted2: #6b6355;
+  --dark: #4a432e;
+  --gold: #c9a227;
+  --red: #b91c1c;
+  --blue: #1e3a8a;
+  --green: #6b8f6b;
+
+  --mono: 'Cousine', monospace;
+  --display: 'Oswald', sans-serif;
+  --hand: 'Caveat', cursive;
+
+  /* ── Адаптивная типографическая шкала (масштабируется по ширине экрана) ── */
+  --fs-3xs: clamp(0.56rem, 0.50rem + 0.28vw, 0.72rem);
+  --fs-2xs: clamp(0.64rem, 0.57rem + 0.34vw, 0.82rem);
+  --fs-xs: clamp(0.74rem, 0.65rem + 0.42vw, 0.98rem);
+  --fs-sm: clamp(0.86rem, 0.74rem + 0.55vw, 1.14rem);
+  --fs-md: clamp(1.00rem, 0.85rem + 0.72vw, 1.38rem);
+  --fs-lg: clamp(1.18rem, 0.92rem + 1.25vw, 1.95rem);
+  --fs-xl: clamp(1.55rem, 1.05rem + 2.3vw, 3.0rem);
+  --fs-2xl: clamp(2.0rem, 1.30rem + 3.4vw, 4.3rem);
+  --fs-3xl: clamp(2.6rem, 1.55rem + 5.0vw, 6.2rem);
+
+  /* ── z-index шкала ── */
+  --z-content: 6;
+  --z-marks: 30;
+  --z-scanlines: 55;
+  --z-grain: 60;
+  --z-nav: 70;
+
+  /* ── безопасные отступы (notch / gesture-bar) ── */
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+}
+
+* {
+  box-sizing: border-box
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0
+}
+
+body {
+  background: var(--bg);
+  overflow: hidden;
+  font-family: var(--mono);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none
+}
+
+/* ── Постоянные оверлеи: зерно + строки развёртки ───────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: .16
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scanlines);
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .07) 2px, rgba(0, 0, 0, .07) 4px)
+}
+
+/* ── Колода слайдов ─────────────────────────────────────────────────────── */
+.deck {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .4s ease;
+  /* безопасные поля под вырезы экрана */
+  padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l)
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: slidein .45s ease
+}
+
+/* направление входа: вперёд снизу, назад сверху */
+.slide.from-next.active {
+  animation: slideinNext .45s ease
+}
+
+.slide.from-prev.active {
+  animation: slideinPrev .45s ease
+}
+
+@keyframes slidein {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes slideinNext {
+  from {
+    opacity: 0;
+    transform: translateY(3.5%)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+@keyframes slideinPrev {
+  from {
+    opacity: 0;
+    transform: translateY(-3.5%)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+/* ── Технические подписи архива ─────────────────────────────────────────── */
+.snum,
+.slabel {
+  position: absolute;
+  top: max(2.4vmin, calc(18px + var(--safe-t)));
+  z-index: var(--z-marks);
+  font-family: var(--mono);
+  color: var(--muted);
+  font-size: var(--fs-3xs);
+  letter-spacing: .34em;
+  text-transform: uppercase
+}
+
+.slabel {
+  left: max(4vmin, calc(20px + var(--safe-l)))
+}
+
+.snum {
+  right: max(4vmin, calc(20px + var(--safe-r)))
+}
+
+.rec {
+  position: absolute;
+  font-family: var(--mono);
+  color: var(--red);
+  font-size: var(--fs-3xs);
+  letter-spacing: .22em;
+  opacity: .75;
+  z-index: var(--z-marks)
+}
+
+.rec::before {
+  content: "● REC"
+}
+
+.tape {
+  position: absolute;
+  background: rgba(210, 195, 155, .34);
+  z-index: 4
+}
+
+.hair {
+  position: absolute;
+  background: rgba(100, 90, 60, .22);
+  z-index: 4
+}
+
+.mark {
+  position: absolute;
+  font-family: var(--hand);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.3;
+  z-index: var(--z-marks)
+}
+
+.stamp {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .26em;
+  padding: .25em .8em;
+  display: inline-block;
+  opacity: .9;
+  font-size: var(--fs-2xs);
+  border: 1.5px solid currentColor
+}
+
+.stamp.gold {
+  color: var(--gold)
+}
+
+.stamp.red {
+  color: var(--red)
+}
+
+.stamp.dim {
+  color: var(--dark)
+}
+
+/* ── Видео-фон и вуаль ──────────────────────────────────────────────────── */
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  z-index: 0
+}
+
+.bg.blur {
+  filter: saturate(.85) contrast(1.05) blur(3px)
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1
+}
+
+.veil.dark {
+  background: radial-gradient(ellipse 92% 82% at 50% 48%, rgba(8, 7, 5, .32), rgba(8, 7, 5, .86))
+}
+
+.veil.darker {
+  background: linear-gradient(180deg, rgba(8, 7, 5, .74), rgba(8, 7, 5, .9))
+}
+
+.layer {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%
+}
+
+.layer.center {
+  display: flex;
+  justify-content: center;
+  height: auto;
+  min-height: 100%;
+  padding: clamp(48px, 7vh, 84px) clamp(20px, 6vw, 90px) clamp(86px, 11vh, 104px)
+}
+
+/* вертикальное центрирование через auto-маргины — безопасно для прокрутки
+   (не обрезает верх контента, если он выше экрана) */
+.layer.center>* {
+  margin-block: auto
+}
+
+/* ── Стеклянная плашка ──────────────────────────────────────────────────── */
+.glass {
+  background: rgba(16, 14, 11, .25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 162, 39, .22);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .45);
+  padding: clamp(24px, 3.5vw, 48px)
+}
+
+/* ── Видео-рамка (медиа-ячейка) ─────────────────────────────────────────── */
+.frame {
+  position: relative;
+  border: 1px solid rgba(100, 90, 60, .45);
+  background: #000;
+  overflow: hidden;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .5)
+}
+
+.frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  filter: saturate(.92) contrast(1.05)
+}
+
+/* ── Типографика заголовков ─────────────────────────────────────────────── */
+.display {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: .95;
+  letter-spacing: -.01em
+}
+
+.vhs {
+  text-shadow: 3px 0 var(--red), -3px 0 var(--blue)
+}
+
+.gold {
+  color: var(--gold)
+}
+
+.red {
+  color: var(--red)
+}
+
+.muted {
+  color: var(--muted2)
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  color: var(--gold);
+  letter-spacing: .32em;
+  font-size: var(--fs-2xs);
+  text-transform: uppercase
+}
+
+/* списки на текстовых экранах */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0
+}
+
+.list li {
+  position: relative;
+  font-family: var(--mono);
+  color: var(--cream);
+  font-size: var(--fs-md);
+  line-height: 1.4;
+  padding: .3em 0 .3em 1.7em;
+  border-bottom: 1px solid rgba(100, 90, 60, .18)
+}
+
+.list li:last-child {
+  border-bottom: 0
+}
+
+.list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 700
+}
+
+/* набор тегов-программ */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1vw, 14px)
+}
+
+.chip {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--cream);
+  border: 1px solid rgba(201, 162, 39, .4);
+  background: rgba(201, 162, 39, .08);
+  padding: .5em 1em
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ЭКРАН 1 — ГЛАВНАЯ
+   Композиция кадрирует центр (фигуру Цоя): крупные надписи уходят к краям.
+   ───────────────────────────────────────────────────────────────────────── */
+#s1 .concept {
+  position: absolute;
+  bottom: clamp(16%, 22vh, 26%);
+  left: max(4vw, 22px);
+  max-width: min(44vw, 30ch);
+  font-family: var(--mono);
+  color: var(--cream);
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 14px #000;
+  z-index: var(--z-content)
+}
+
+#s1 .concept small {
+  display: block;
+  margin-top: .5em;
+  color: var(--gold);
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: .7em;
+  letter-spacing: 0;
+  text-transform: none
+}
+
+#s1 .credit {
+  position: absolute;
+  bottom: clamp(7%, 9vh, 11%);
+  right: max(4vw, 22px);
+  max-width: min(42vw, 26ch);
+  text-align: right;
+  z-index: var(--z-content)
+}
+
+#s1 .credit .t {
+  font-family: var(--mono);
+  color: var(--cream);
+  letter-spacing: .3em;
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px #000
+}
+
+#s1 .credit .n {
+  font-family: var(--hand);
+  font-weight: 700;
+  color: var(--gold);
+  font-size: var(--fs-xl);
+  line-height: 1;
+  margin-top: .12em;
+  text-shadow: 0 2px 10px #000
+}
+
+#s1 .kino {
+  position: absolute;
+  top: clamp(10%, 12vh, 14%);
+  right: max(5vw, 22px);
+  z-index: var(--z-content)
+}
+
+#s1 .years {
+  position: absolute;
+  top: clamp(18%, 20vh, 22%);
+  right: max(5vw, 22px);
+  z-index: var(--z-content)
+}
+
+#s1 .gk {
+  position: absolute;
+  top: clamp(25%, 27vh, 29%);
+  right: max(5vw, 22px);
+  z-index: var(--z-content);
+  font-family: var(--mono);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  letter-spacing: .25em;
+  text-transform: uppercase
+}
+
+#s1 .tag {
+  position: absolute;
+  bottom: clamp(7%, 9vh, 11%);
+  left: max(4vw, 22px);
+  z-index: var(--z-content);
+  font-family: var(--mono);
+  background: #d4c9a8;
+  color: #1c1a14;
+  padding: .3em .8em;
+  font-size: var(--fs-2xs);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  transform: rotate(-.8deg)
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ЭКРАН 2 — ИНТРО / ОБРАЩЕНИЕ
+   Карточка чуть выше центра, чтобы не закрывать центральную надпись фона.
+   ───────────────────────────────────────────────────────────────────────── */
+/* Панель-обращение размещена в нижней зоне экрана: между центром и кнопками
+   пролистывания. padding-top: 50vh опускает область центрирования ниже середины,
+   а нижний отступ держит панель выше навигации. Ширина — 90% экрана. */
+#s2 .layer {
+  display: flex;
+  justify-content: center;
+  height: auto;
+  min-height: 100%;
+  padding: 55vh clamp(16px, 5vw, 60px) clamp(78px, 11vh, 104px);
+}
+
+#s2 .wrap {
+  width: min(1200px, 90vw);
+  margin-block: auto;
+  padding: clamp(16px, 2vw, 28px) clamp(20px, 2.6vw, 36px)
+}
+
+#s2 .eyebrow {
+  margin-bottom: .7em
+}
+
+#s2 .addr {
+  font-family: var(--mono);
+  color: var(--cream);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  margin: 0
+}
+
+#s2 .sign {
+  margin-top: .8em;
+  font-family: var(--hand);
+  font-weight: 700;
+  color: var(--gold);
+  font-size: var(--fs-lg)
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ЭКРАН 3 — ОСНОВНАЯ ЛИНИЯ РАБОТЫ
+   ───────────────────────────────────────────────────────────────────────── */
+#s3 .head {
+  position: absolute;
+  top: clamp(4%, 4vh, 8%);
+  left: max(5vw, 22px);
+  right: max(5vw, 22px);
+  font-size: var(--fs-2xl)
+}
+
+#s3 .head .sub {
+  display: block;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: .26em;
+  letter-spacing: .12em;
+  color: var(--muted);
+  margin-top: .6em
+}
+
+#s3 .process {
+  position: absolute;
+  top: clamp(24%, 27vh, 30%);
+  left: max(5vw, 22px);
+  right: max(5vw, 22px);
+  bottom: clamp(17%, 20vh, 22%);
+  display: flex;
+  align-items: stretch;
+  gap: clamp(8px, 1vw, 18px)
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0
+}
+
+.stage .st {
+  font-family: var(--mono);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  margin-bottom: .6em
+}
+
+.stage .ti {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  line-height: 1;
+  margin-bottom: .5em
+}
+
+.stage .de {
+  font-family: var(--mono);
+  color: var(--text);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  margin-bottom: 1em;
+  min-height: 4.4em
+}
+
+.stage .frame {
+  width: 100%;
+  height: clamp(168px, 28vh, 312px);
+  margin-top: auto
+}
+
+/* стрелки выровнены по вертикальному центру медиа-кадров */
+.arrow {
+  flex: 0 0 clamp(36px, 5vw, 70px);
+  align-self: flex-end;
+  height: clamp(168px, 28vh, 312px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center
+}
+
+.arrow b {
+  font-family: var(--hand);
+  font-weight: 700;
+  color: var(--gold);
+  font-size: var(--fs-xl);
+  line-height: 1
+}
+
+.arrow span {
+  font-family: var(--hand);
+  font-weight: 700;
+  color: var(--muted2);
+  font-size: var(--fs-xs);
+  margin-top: .2em
+}
+
+#s3 .mark {
+  bottom: clamp(4%, 5vh, 6.5%);
+  left: max(5vw, 22px);
+  font-size: var(--fs-lg);
+  transform: rotate(-.8deg)
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ЭКРАН 4 — ВИЗУАЛЬНЫЙ ЯЗЫК АРХИВОВ  (увеличенные шрифты + крупнее медиа)
+   Сетка: слева текст, справа медиа-кластер.
+   ───────────────────────────────────────────────────────────────────────── */
+#s4 .layer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: clamp(8px, 1.2vh, 14px) clamp(20px, 3vw, 48px);
+  align-content: center;
+  height: auto;
+  min-height: 100%;
+  padding: clamp(36px, 5vh, 58px) max(5vw, 22px) clamp(74px, 10vh, 92px)
+}
+
+#s4 .col-text {
+  min-width: 0;
+  align-self: center
+}
+
+#s4 .head {
+  font-size: var(--fs-xl);
+  margin-bottom: .45em
+}
+
+#s4 .lead {
+  font-family: var(--mono);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  margin: 0 0 clamp(6px, 1vh, 12px)
+}
+
+#s4 .lead b {
+  color: var(--gold)
+}
+
+.point {
+  display: flex;
+  gap: clamp(10px, 1vw, 16px);
+  margin-bottom: clamp(1px, 0.4vh, 5px)
+}
+
+.point .pn {
+  font-family: var(--mono);
+  color: var(--gold);
+  font-size: var(--fs-xs);
+  letter-spacing: .12em;
+  padding-top: .25em;
+  flex: 0 0 auto
+}
+
+.point .pt {
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--cream);
+  font-size: var(--fs-sm);
+  letter-spacing: .01em;
+  line-height: 1.1
+}
+
+.point .pd {
+  font-family: var(--mono);
+  color: var(--text);
+  font-size: var(--fs-xs);
+  line-height: 1.3;
+  margin-top: .15em
+}
+
+#s4 .cluster {
+  position: relative;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  min-width: 0
+}
+
+/* медиа у́же и выше, со смещением «лист на листе»; кадры перекрываются */
+#s4 .cluster .frame {
+  width: 68%;
+  height: clamp(124px, 28vh, 224px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .62)
+}
+
+/* верхнее — прижато вправо */
+#s4 .cluster .frame:nth-child(1) {
+  align-self: flex-end;
+  transform: rotate(1.6deg);
+  z-index: 1
+}
+
+/* центральное — прижато влево, перекрывает верхнее */
+#s4 .cluster .frame:nth-child(2) {
+  align-self: flex-start;
+  margin-top: clamp(-46px, -5vh, -24px);
+  transform: rotate(-1.8deg);
+  z-index: 2
+}
+
+/* нижнее — прижато вправо, перекрывает центральное */
+#s4 .cluster .frame:nth-child(3) {
+  align-self: flex-end;
+  margin-top: clamp(-46px, -5vh, -24px);
+  transform: rotate(1.1deg);
+  z-index: 3
+}
+
+#s4 .accents {
+  position: absolute;
+  left: max(5vw, 22px);
+  bottom: clamp(20px, 5vh, 40px);
+  display: flex;
+  gap: clamp(5px, 0.7vw, 9px);
+  flex-wrap: wrap;
+  max-width: min(48%, 440px);
+  z-index: 5
+}
+
+#s4 .accents .stamp {
+  font-size: var(--fs-3xs);
+  letter-spacing: .14em;
+  padding: .22em .6em
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ЭКРАН 5 — ВИЗУАЛЬНЫЙ ЯЗЫК РЕКОНСТРУКЦИИ  (крупнее шрифты + крупнее медиа)
+   ───────────────────────────────────────────────────────────────────────── */
+#s5 .layer {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 100%;
+  padding: clamp(46px, 6.5vh, 72px) max(5vw, 22px) clamp(84px, 11vh, 100px)
+}
+
+#s5 .head {
+  font-size: var(--fs-xl);
+  margin-bottom: .5em
+}
+
+#s5 .lead {
+  font-family: var(--mono);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  margin: 0 0 clamp(6px, 1.1vh, 13px);
+  max-width: 70ch
+}
+
+#s5 .cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(12px, 1.4vw, 22px);
+  min-height: 0
+}
+
+.card {
+  border: 1px solid rgba(100, 90, 60, .26);
+  background: #0f0e0b;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0
+}
+
+.card .cv {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+  border-bottom: 1px solid rgba(100, 90, 60, .22)
+}
+
+.card .cv video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  filter: saturate(.92) contrast(1.05)
+}
+
+.card .cb {
+  padding: clamp(10px, 0.9vw, 16px);
+  display: flex;
+  flex-direction: column;
+  flex: 1
+}
+
+.card .mn {
+  font-family: var(--mono);
+  color: var(--muted);
+  font-size: var(--fs-2xs);
+  letter-spacing: .26em;
+  margin-bottom: .45em
+}
+
+.card .ct {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: var(--fs-md);
+  line-height: 1.1;
+  margin-bottom: .4em
+}
+
+.card .cd {
+  font-family: var(--mono);
+  color: var(--text);
+  font-size: var(--fs-xs);
+  line-height: 1.4
+}
+
+.card .rule {
+  margin-top: auto;
+  height: 2px;
+  opacity: .5
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ЭКРАНЫ 6–8 — ТЕКСТОВЫЕ (Переходы · Инструменты · Концовка)
+   Центрированная читаемая плашка поверх затемнённого фона.
+   ───────────────────────────────────────────────────────────────────────── */
+.panel {
+  width: min(1120px, 110vw)
+}
+
+.panel .head {
+  font-size: var(--fs-xl);
+  margin: .2em 0 .4em
+}
+
+.panel .lead {
+  font-family: var(--mono);
+  color: var(--cream);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  margin: 0 0 .8em
+}
+
+.panel .lead b {
+  color: var(--gold)
+}
+
+.panel .body {
+  font-family: var(--mono);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  margin: 0
+}
+
+#s7 .chips {
+  margin: .1em 0 .8em
+}
+
+/* кнопка-ссылка (Miro) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  min-height: 48px;
+  margin-top: 1em;
+  padding: .7em 1.5em;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #1c1a14;
+  background: var(--gold);
+  border: 1px solid var(--gold);
+  transition: transform .2s ease, background .2s ease, color .2s ease
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: transparent;
+  color: var(--gold);
+  transform: translateY(-2px)
+}
+
+.btn svg {
+  width: 1.1em;
+  height: 1.1em
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   НАВИГАЦИЯ
+   ───────────────────────────────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  bottom: calc(14px + var(--safe-b));
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2vw, 24px);
+  pointer-events: none
+}
+
+.nav>button {
+  pointer-events: auto;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: rgba(16, 14, 11, .5);
+  border: 1px solid rgba(201, 162, 39, .25);
+  border-radius: 50%;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  font-family: var(--mono);
+  color: var(--cream);
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: opacity .2s, border-color .2s, background .2s, transform .2s;
+  touch-action: manipulation
+}
+
+.nav>button:hover:not(:disabled),
+.nav>button:focus-visible:not(:disabled) {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: scale(1.06)
+}
+
+.nav>button:disabled {
+  opacity: .22;
+  cursor: default
+}
+
+.pips {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 0.6vw, 6px)
+}
+
+.pip {
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: clamp(20px, 5vw, 24px);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation
+}
+
+.pip::before {
+  content: "";
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dark);
+  transition: width .28s ease, background .28s ease, border-radius .28s ease
+}
+
+.pip.on::before {
+  width: clamp(16px, 4vw, 22px);
+  border-radius: 4px;
+  background: var(--gold)
+}
+
+/* подсказка-свайп (только мобильные, исчезает) */
+.swipe-hint {
+  position: fixed;
+  left: 50%;
+  bottom: calc(76px + var(--safe-b));
+  transform: translateX(-50%);
+  z-index: var(--z-nav);
+  font-family: var(--mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s ease
+}
+
+.swipe-hint.show {
+  opacity: .8;
+  animation: hintpulse 1.8s ease-in-out infinite
+}
+
+@keyframes hintpulse {
+
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0)
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-5px)
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   АДАПТИВ — ПЛАНШЕТ / МОБИЛЬНЫЙ
+   ───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  #s5 .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(12px, 2vw, 20px)
+  }
+}
+
+@media (max-width: 760px) {
+
+  /* Экран 1 — надписи к краям, центр свободен */
+  #s1 .concept {
+    max-width: 64vw;
+    bottom: auto;
+    top: clamp(30%, 34vh, 38%)
+  }
+
+  #s1 .credit {
+    max-width: 64vw
+  }
+
+  /* Экран 3 — этапы в столбик */
+  #s3 .head {
+    position: static;
+    padding: clamp(64px, 11vh, 100px) max(5vw, 22px) 0
+  }
+
+  #s3 .process {
+    position: static;
+    flex-direction: column;
+    gap: clamp(16px, 3vh, 28px);
+    padding: clamp(20px, 4vh, 36px) max(5vw, 22px) clamp(70px, 11vh, 110px)
+  }
+
+  #s3 .layer {
+    overflow: visible
+  }
+
+  .stage .de {
+    min-height: 0
+  }
+
+  .stage .frame {
+    aspect-ratio: 16 / 9
+  }
+
+  .arrow {
+    flex-basis: auto;
+    flex-direction: row;
+    align-self: center;
+    height: auto;
+    gap: .6em
+  }
+
+  .arrow b {
+    transform: rotate(90deg)
+  }
+
+  #s3 .mark {
+    display: none
+  }
+
+  /* Экран 4 — одна колонка */
+  #s4 .layer {
+    grid-template-columns: 1fr;
+    gap: clamp(18px, 3vh, 28px)
+  }
+
+  #s4 .cluster {
+    order: 3;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px
+  }
+
+  #s4 .cluster .frame {
+    flex: 1 1 30%;
+    width: auto;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin-top: 0;
+    align-self: auto;
+    transform: none
+  }
+
+  #s4 .accents {
+    position: static;
+    max-width: none;
+    margin-top: 4px
+  }
+
+  #s4 .accents .stamp {
+    font-size: var(--fs-2xs)
+  }
+
+  /* Экран 5 — карточки 2×2 */
+  #s5 .cards {
+    grid-template-columns: repeat(2, 1fr)
+  }
+}
+
+@media (max-width: 480px) {
+  #s5 .cards {
+    grid-template-columns: 1fr;
+    gap: 14px
+  }
+
+  #s4 .cluster .frame {
+    flex-basis: 45%
+  }
+}
+
+/* Текстовые/контентные экраны: если контент выше вьюпорта — внутренняя прокрутка */
+#s2.slide,
+#s3.slide,
+#s4.slide,
+#s5.slide,
+#s6.slide,
+#s7.slide,
+#s8.slide {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch
+}
+
+#s5 .layer {
+  min-height: 100%
+}
+
+/* ── Уважение к prefers-reduced-motion ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  .slide.active,
+  .slide.from-next.active,
+  .slide.from-prev.active {
+    animation: none
+  }
+
+  .swipe-hint.show {
+    animation: none
+  }
+
+  * {
+    scroll-behavior: auto !important
+  }
+}
