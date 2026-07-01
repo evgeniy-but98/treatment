@@ -185,6 +185,8 @@ body {
 
 .rec {
   position: absolute;
+  right: max(4vmin, calc(20px + var(--safe-r)));
+  bottom: max(4vmin, calc(20px + var(--safe-b)));
   font-family: var(--mono);
   color: var(--red);
   font-size: var(--fs-3xs);
@@ -403,33 +405,6 @@ body {
    ЭКРАН 1 — ГЛАВНАЯ
    Композиция кадрирует центр (фигуру Цоя): крупные надписи уходят к краям.
    ───────────────────────────────────────────────────────────────────────── */
-#s1 .concept {
-  position: absolute;
-  bottom: clamp(16%, 22vh, 26%);
-  left: max(4vw, 22px);
-  max-width: min(44vw, 30ch);
-  font-family: var(--mono);
-  color: var(--cream);
-  font-size: var(--fs-lg);
-  font-weight: 400;
-  line-height: 1.12;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  text-shadow: 0 2px 14px #000;
-  z-index: var(--z-content)
-}
-
-#s1 .concept small {
-  display: block;
-  margin-top: .5em;
-  color: var(--gold);
-  font-family: var(--hand);
-  font-weight: 700;
-  font-size: .7em;
-  letter-spacing: 0;
-  text-transform: none
-}
-
 #s1 .credit {
   position: absolute;
   bottom: clamp(7%, 9vh, 11%);
@@ -458,32 +433,6 @@ body {
   text-shadow: 0 2px 10px #000
 }
 
-#s1 .kino {
-  position: absolute;
-  top: clamp(10%, 12vh, 14%);
-  right: max(5vw, 22px);
-  z-index: var(--z-content)
-}
-
-#s1 .years {
-  position: absolute;
-  top: clamp(18%, 20vh, 22%);
-  right: max(5vw, 22px);
-  z-index: var(--z-content)
-}
-
-#s1 .gk {
-  position: absolute;
-  top: clamp(25%, 27vh, 29%);
-  right: max(5vw, 22px);
-  z-index: var(--z-content);
-  font-family: var(--mono);
-  color: var(--muted);
-  font-size: var(--fs-2xs);
-  letter-spacing: .25em;
-  text-transform: uppercase
-}
-
 #s1 .tag {
   position: absolute;
   bottom: clamp(7%, 9vh, 11%);
@@ -499,6 +448,13 @@ body {
   transform: rotate(-.8deg)
 }
 
+/* На обложке REC остаётся сверху справа — снизу справа стоит подпись «Тритмент» */
+#s1 .rec {
+  top: clamp(10%, 12vh, 14%);
+  bottom: auto;
+  right: max(5vw, 22px)
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    ЭКРАН 2 — ИНТРО / ОБРАЩЕНИЕ
    Карточка чуть выше центра, чтобы не закрывать центральную надпись фона.
@@ -506,13 +462,6 @@ body {
 /* Панель-обращение размещена в нижней зоне экрана: между центром и кнопками
    пролистывания. padding-top: 50vh опускает область центрирования ниже середины,
    а нижний отступ держит панель выше навигации. Ширина — 90% экрана. */
-#s2 .layer {
-  display: flex;
-  justify-content: center;
-  height: auto;
-  min-height: 100%;
-  padding: 55vh clamp(16px, 5vw, 60px) clamp(78px, 11vh, 104px);
-}
 
 #s2 .wrap {
   width: min(1200px, 90vw);
@@ -1052,6 +1001,56 @@ body {
   }
 }
 
+/* ── Кнопка фоновой музыки (стиль как у кнопок навигации) ────────────────── */
+.sound-toggle {
+  position: fixed;
+  bottom: calc(14px + var(--safe-b));
+  left: calc(14px + var(--safe-l));
+  z-index: var(--z-nav);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: rgba(16, 14, 11, .5);
+  border: 1px solid rgba(201, 162, 39, .25);
+  border-radius: 50%;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  color: var(--cream);
+  transition: border-color .2s, color .2s, transform .2s;
+  touch-action: manipulation
+}
+
+.sound-toggle:hover,
+.sound-toggle:focus-visible {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: scale(1.06)
+}
+
+.sound-toggle svg {
+  width: 19px;
+  height: 19px
+}
+
+.sound-toggle .icon-off {
+  display: none
+}
+
+.sound-toggle.is-off {
+  color: var(--muted2);
+  border-color: rgba(100, 90, 60, .3)
+}
+
+.sound-toggle.is-off .icon-on {
+  display: none
+}
+
+.sound-toggle.is-off .icon-off {
+  display: block
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    АДАПТИВ — ПЛАНШЕТ / МОБИЛЬНЫЙ
    ───────────────────────────────────────────────────────────────────────── */
@@ -1064,13 +1063,7 @@ body {
 
 @media (max-width: 760px) {
 
-  /* Экран 1 — надписи к краям, центр свободен */
-  #s1 .concept {
-    max-width: 64vw;
-    bottom: auto;
-    top: clamp(30%, 34vh, 38%)
-  }
-
+  /* Экран 1 — подпись к краю, центр свободен */
   #s1 .credit {
     max-width: 64vw
   }
@@ -1116,14 +1109,20 @@ body {
     display: none
   }
 
-  /* Экран 4 — одна колонка */
+  /* Экран 4 — одна колонка: порядок текст → медиа → теги.
+     Теги уходят под медиа и получают отступ снизу, чтобы их не перекрывала навигация. */
   #s4 .layer {
     grid-template-columns: 1fr;
-    gap: clamp(18px, 3vh, 28px)
+    gap: clamp(18px, 3vh, 28px);
+    padding-bottom: clamp(96px, 14vh, 120px)
+  }
+
+  #s4 .col-text {
+    order: 1
   }
 
   #s4 .cluster {
-    order: 3;
+    order: 2;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px
@@ -1141,8 +1140,10 @@ body {
 
   #s4 .accents {
     position: static;
+    order: 3;
     max-width: none;
-    margin-top: 4px
+    margin-top: clamp(6px, 1.4vh, 14px);
+    margin-bottom: clamp(8px, 2vh, 18px)
   }
 
   #s4 .accents .stamp {

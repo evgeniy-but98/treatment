@@ -185,3 +185,64 @@
     activateVideos(slides[0]);
   }
 })();
+
+/* ============================================================================
+   Фоновая музыка.
+   - Автозапуск звука браузеры блокируют → стартуем при первом действии
+     пользователя (клик / клавиша / касание / колесо).
+   - Тихо (громкость 0.18). Кнопка-переключатель; выбор запоминается.
+   - На неактивной вкладке ставим на паузу.
+   ========================================================================= */
+(function () {
+  var bgm = document.getElementById('bgm');
+  var btn = document.getElementById('soundToggle');
+  if (!bgm || !btn) return;
+
+  bgm.volume = 0.18;
+  var wanted = true;                       // желаемое состояние (вкл по умолчанию)
+  try { if (localStorage.getItem('bgm') === 'off') wanted = false; } catch (e) { }
+  var started = false;
+
+  function render() {
+    var playing = wanted && !bgm.paused;
+    btn.classList.toggle('is-off', !playing);
+    btn.setAttribute('aria-pressed', wanted ? 'true' : 'false');
+    btn.setAttribute('aria-label', wanted ? 'Выключить звук' : 'Включить звук');
+  }
+  function tryPlay() {
+    if (!wanted) return;
+    var p = bgm.play();
+    if (p && p.catch) p.catch(function () { });
+  }
+
+  // первый жест разблокирует звук
+  var GESTURES = ['pointerdown', 'keydown', 'touchstart', 'wheel'];
+  function firstGesture() {
+    if (started) return;
+    started = true;
+    tryPlay();
+    render();
+    GESTURES.forEach(function (ev) { document.removeEventListener(ev, firstGesture); });
+  }
+  GESTURES.forEach(function (ev) { document.addEventListener(ev, firstGesture, { passive: true }); });
+
+  // переключатель
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    wanted = !wanted;
+    try { localStorage.setItem('bgm', wanted ? 'on' : 'off'); } catch (e) { }
+    if (wanted) tryPlay(); else bgm.pause();
+    render();
+  });
+
+  bgm.addEventListener('play', render);
+  bgm.addEventListener('pause', render);
+
+  // пауза на скрытой вкладке
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { try { bgm.pause(); } catch (e) { } }
+    else if (wanted) tryPlay();
+  });
+
+  render();
+})();
