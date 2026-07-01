@@ -184,7 +184,7 @@ body {
 }
 
 .rec {
-  position: absolute;
+  position: fixed;
   right: max(4vmin, calc(20px + var(--safe-r)));
   bottom: max(4vmin, calc(20px + var(--safe-b)));
   font-family: var(--mono);
@@ -459,14 +459,12 @@ body {
    ЭКРАН 2 — ИНТРО / ОБРАЩЕНИЕ
    Карточка чуть выше центра, чтобы не закрывать центральную надпись фона.
    ───────────────────────────────────────────────────────────────────────── */
-/* Панель-обращение размещена в нижней зоне экрана: между центром и кнопками
-   пролистывания. padding-top: 50vh опускает область центрирования ниже середины,
-   а нижний отступ держит панель выше навигации. Ширина — 90% экрана. */
+/* Панель-обращение центрируется (см. .layer.center), ширина — 90% экрана. */
 
 #s2 .wrap {
   width: min(1200px, 90vw);
   margin-block: auto;
-  padding: clamp(16px, 2vw, 28px) clamp(20px, 2.6vw, 36px)
+  padding: clamp(18px, 2.4vw, 32px) clamp(20px, 2.8vw, 40px)
 }
 
 #s2 .eyebrow {
@@ -477,8 +475,13 @@ body {
   font-family: var(--mono);
   color: var(--cream);
   font-size: var(--fs-md);
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0
+}
+
+/* отступ между абзацами обращения, чтобы текст не слипался */
+#s2 .addr+.addr {
+  margin-top: .75em
 }
 
 #s2 .sign {
@@ -849,6 +852,49 @@ body {
   margin: .1em 0 .8em
 }
 
+/* ── ЭКРАН 6 — панель с медиа: текст слева, видео-кластер справа ─────────── */
+#s6 .panel {
+  width: min(1180px, 94vw);
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.82fr);
+  gap: clamp(22px, 3vw, 48px);
+  align-items: center
+}
+
+#s6 .cluster {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0
+}
+
+/* эффект «лист на листе»: у́же и выше, кадры перекрываются */
+#s6 .cluster .frame {
+  width: 65%;
+  height: clamp(94px, 25vh, 168px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .62)
+}
+
+#s6 .cluster .frame:nth-child(1) {
+  align-self: flex-end;
+  transform: rotate(1.6deg);
+  z-index: 1
+}
+
+#s6 .cluster .frame:nth-child(2) {
+  align-self: flex-start;
+  margin-top: clamp(-40px, -4.5vh, -20px);
+  transform: rotate(-1.8deg);
+  z-index: 2
+}
+
+#s6 .cluster .frame:nth-child(3) {
+  align-self: flex-end;
+  margin-top: clamp(-40px, -4.5vh, -20px);
+  transform: rotate(1.1deg);
+  z-index: 3
+}
+
 /* кнопка-ссылка (Miro) */
 .btn {
   display: inline-flex;
@@ -1113,7 +1159,8 @@ body {
      Теги уходят под медиа и получают отступ снизу, чтобы их не перекрывала навигация. */
   #s4 .layer {
     grid-template-columns: 1fr;
-    gap: clamp(18px, 3vh, 28px);
+    align-content: start;
+    gap: clamp(28px, 5vh, 48px);
     padding-bottom: clamp(96px, 14vh, 120px)
   }
 
@@ -1125,10 +1172,11 @@ body {
     order: 2;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px
+    gap: 10px;
+    margin-top: clamp(10px, 2.5vh, 22px)
   }
 
-  #s4 .cluster .frame {
+  #s4 .cluster .frame:nth-child(n) {
     flex: 1 1 30%;
     width: auto;
     height: auto;
@@ -1153,6 +1201,29 @@ body {
   /* Экран 5 — карточки 2×2 */
   #s5 .cards {
     grid-template-columns: repeat(2, 1fr)
+  }
+
+  /* Экран 6 — видео уходят под текст */
+  #s6 .panel {
+    grid-template-columns: 1fr;
+    gap: clamp(18px, 3.5vh, 30px)
+  }
+
+  #s6 .cluster {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: clamp(8px, 2vh, 18px)
+  }
+
+  #s6 .cluster .frame:nth-child(n) {
+    width: auto;
+    height: auto;
+    flex: 1 1 30%;
+    aspect-ratio: 16 / 10;
+    margin-top: 0;
+    align-self: auto;
+    transform: none
   }
 }
 

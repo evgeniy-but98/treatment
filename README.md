@@ -53,7 +53,8 @@ media/          — все видео и постеры (кадры-застав
 - **Экран 3:** Архив `archive-cassette.mp4` · Коллаж `archive-collage.mp4` · Реконструкция `recon-cutout.mp4`
 - **Экран 4 (коллаж справа):** `archive-cassette.mp4`, `archive-cutouts.mp4`, `archive-loop.mp4`
 - **Экран 5 (4 карточки):** Cut-out `recon-paper.mp4` · Sketch `recon-main.mp4` · Punk `recon-punk.mp4` · Paper `recon-storyboard.mp4`
-- **Экран 6 (фон):** `archive-collage.mp4` · **Экран 7 (фон):** `recon-cutout.mp4` · **Экран 8 (фон):** `cover.mp4`
+- **Экран 6:** фон `archive-collage.mp4`; кластер переходов (справа/снизу) `trans-tear.mp4`, `trans-glitch.mp4`, `trans-cut.mp4`
+- **Экран 7 (фон):** `recon-cutout.mp4` · **Экран 8 (фон):** `cover.mp4`
 - Не используются сейчас: `recon-cutout.mp4` (только эк.3), `recon-good.mp4`, `recon-tving.mp4`
 
 > Видео — **сжатые для веба** версии (без звука, зацикленные). При доработке: у роликов с запечёнными чёрными рамками рамки **обрезаны** (`crop`), а тяжёлые файлы пересжаты (`recon-storyboard.mp4` 42 МБ → ~6.8 МБ, `recon-punk.mp4` 6.8 → 2.0 МБ). Все видео отображаются через `object-fit: cover` (без полей). Исходники до обработки лежат в `media/_orig/` — папку можно удалить, если бэкап не нужен.
